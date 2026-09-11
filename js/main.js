@@ -146,7 +146,7 @@
     var url  = URL.createObjectURL(blob);
     var a    = document.createElement('a');
     a.href   = url;
-    a.download = 'ITPTIT_PV_' + new Date().toISOString().slice(0, 10) + '.csv';
+    a.download = 'pvanITPTIT.csv';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
