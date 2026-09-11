@@ -795,6 +795,7 @@ body {
   margin-bottom: 10px;
 }
 .cv-section-label .section-icon { font-size: 14px; }
+.cv-section-label svg { width: 14px; height: 14px; flex-shrink: 0; }
 
 .cv-section-content {
   font-size: 14px;
