@@ -59,6 +59,24 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ── GLOBAL SVG SIZE GUARD ── */
+svg { display: inline-block; vertical-align: middle; }
+.header svg,
+.btn svg,
+.btn-nav svg,
+.btn-back svg,
+.btn-export svg,
+.card-arrow svg,
+.search-icon svg,
+.search-clear svg,
+.cv-section-label svg,
+.meta-chip svg,
+.panel-title svg,
+.profile-fb-link svg,
+.history-meta svg,
+.tag svg,
+.filter-group svg { width: 14px; height: 14px; flex-shrink: 0; }
+
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
