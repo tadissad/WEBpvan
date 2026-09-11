@@ -446,10 +446,11 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   opacity: 1;
   transition: opacity var(--transition);
-  padding: 24px 20px;
+  padding: 24px 20px 20px;
 }
 .review-panel.collapsed .panel-inner { opacity: 0; pointer-events: none; }
 
@@ -588,7 +589,7 @@ body {
 }
 
 /* Comment textarea */
-.comment-section { flex: 1; display: flex; flex-direction: column; margin-bottom: 20px; }
+.comment-section { display: flex; flex-direction: column; margin-bottom: 16px; }
 .comment-label {
   font-size: 12px;
   font-weight: 600;
@@ -598,8 +599,9 @@ body {
   margin-bottom: 8px;
 }
 .comment-textarea {
-  flex: 1;
-  min-height: 160px;
+  width: 100%;
+  min-height: 140px;
+  max-height: 280px;
   padding: 12px;
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -688,7 +690,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: auto;
+  margin-top: 4px;
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  background: var(--bg-panel);
+  padding: 12px 0 4px;
 }
 
 /* ── PROFILE CV CONTENT ── */
