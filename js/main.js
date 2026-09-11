@@ -59,15 +59,17 @@
 
   function scoreColor(score) {
     var n = parseInt(score);
-    if (n <= 3) return '#ff5555';
-    if (n <= 6) return '#ffb86c';
-    if (n <= 8) return '#f1fa8c';
+    if (n === 0)  return '#484f58';   // xám — chưa chấm
+    if (n <= 3)   return '#ff5555';
+    if (n <= 6)   return '#ffb86c';
+    if (n <= 8)   return '#f1fa8c';
     return '#50fa7b';
   }
 
   function scoreGradient(score) {
     var n   = parseInt(score);
-    var pct = ((n - 1) / 9) * 100;
+    if (n === 0) return '#30363d';    // thanh xám — chưa chấm
+    var pct = (n / 10) * 100;
     var endColor = n <= 3 ? '#ff5555' : n <= 6 ? '#ffb86c' : n <= 8 ? '#f1fa8c' : '#50fa7b';
     return 'linear-gradient(to right, #ff5555 0%, ' + endColor + ' ' + pct + '%, #30363d ' + pct + '%, #30363d 100%)';
   }
@@ -383,8 +385,13 @@
   });
 
   function updateScoreDisplay(val) {
-    scoreDisplay.textContent  = val;
-    scoreDisplay.style.color  = scoreColor(val);
+    if (val === 0) {
+      scoreDisplay.textContent  = '—';
+      scoreDisplay.style.color  = '#484f58';
+    } else {
+      scoreDisplay.textContent  = val;
+      scoreDisplay.style.color  = scoreColor(val);
+    }
     scoreSlider.style.background = scoreGradient(val);
   }
 
@@ -561,7 +568,7 @@
     if (badgeMsv)    badgeMsv.textContent    = msv;
     if (badgeAvatar) badgeAvatar.textContent = initials;
 
-    var defaultScore   = existing ? existing.score   : 5;
+    var defaultScore   = existing ? existing.score   : 0;
     var defaultComment = existing ? existing.comment : '';
     scoreSlider.value  = defaultScore;
     updateScoreDisplay(defaultScore);
@@ -571,6 +578,12 @@
     submitBtn.innerHTML = (existing ? IC.edit + ' Cập nhật' : IC.submit + ' Lưu kết quả');
     submitBtn.style.background = '';
     submitBtn.style.color = '';
+
+    // Warning nếu điểm = 0
+    submitBtn.title = '';
+    if (!existing) {
+      submitBtn.title = 'Kéo slider lên để chấm điểm (0 = chưa chấm)';
+    }
 
     var submittedInfo = document.getElementById('submitted-info');
     if (submittedInfo) {
@@ -656,7 +669,7 @@
           (entry.comment ? '<div class="history-comment-preview">"' + escapeHtml(truncate(entry.comment, 80)) + '"</div>' : '') +
           '<div style="font-size:11px;color:var(--text-muted);margin-top:3px">' + formatDate(entry.submittedAt) + '</div>' +
         '</div>' +
-        '<div class="score-bubble score-' + sc + '">' + sc + '</div>' +
+        '<div class="score-bubble score-' + sc + '">' + (sc === 0 ? '—' : sc) + '</div>' +
         '<div class="history-actions" onclick="event.stopPropagation()">' +
           '<button class="btn btn-sm btn-secondary btn-edit-entry" data-msv="' + escapeHtml(entry.msv) + '" title="Xem / Sửa">' + IC.edit + '</button>' +
           '<button class="btn btn-sm btn-danger btn-delete-entry" data-msv="' + escapeHtml(entry.msv) + '" data-name="' + escapeHtml(entry.name) + '" title="Xóa">' + IC.trash + '</button>' +
@@ -725,6 +738,6 @@
   // INIT
   // ──────────────────────────────────────────────────────────
   renderCandidates('');
-  updateScoreDisplay(5);
+  updateScoreDisplay(0);
 
 })();
