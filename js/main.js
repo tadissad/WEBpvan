@@ -368,17 +368,59 @@
 
   var profileContent  = document.getElementById('profile-content');
   var reviewPanel     = document.getElementById('review-panel');
-  var panelToggle     = document.getElementById('panel-toggle');
+  var dragHandle      = document.getElementById('panel-drag-handle');
   var scoreSlider     = document.getElementById('score-slider');
   var scoreDisplay    = document.getElementById('score-display');
   var commentArea     = document.getElementById('comment-area');
   var submitBtn       = document.getElementById('btn-submit');
-  var panelCollapsed  = false;
 
-  panelToggle.addEventListener('click', function () {
-    panelCollapsed = !panelCollapsed;
-    reviewPanel.classList.toggle('collapsed', panelCollapsed);
-  });
+  // ── Drag-to-resize panel ──
+  if (dragHandle && reviewPanel) {
+    var isDragging = false;
+    var startX, startW;
+
+    dragHandle.addEventListener('mousedown', function (e) {
+      isDragging = true;
+      startX = e.clientX;
+      startW = reviewPanel.getBoundingClientRect().width;
+      dragHandle.classList.add('dragging');
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function (e) {
+      if (!isDragging) return;
+      var dx = startX - e.clientX;          // kéo sang trái → panel rộng hơn
+      var newW = Math.min(560, Math.max(240, startW + dx));
+      reviewPanel.style.width = newW + 'px';
+    });
+
+    document.addEventListener('mouseup', function () {
+      if (!isDragging) return;
+      isDragging = false;
+      dragHandle.classList.remove('dragging');
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    });
+
+    // Touch support
+    dragHandle.addEventListener('touchstart', function (e) {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      startW = reviewPanel.getBoundingClientRect().width;
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('touchmove', function (e) {
+      if (!isDragging) return;
+      var dx = startX - e.touches[0].clientX;
+      var newW = Math.min(560, Math.max(240, startW + dx));
+      reviewPanel.style.width = newW + 'px';
+    });
+
+    document.addEventListener('touchend', function () { isDragging = false; });
+  }
 
   scoreSlider.addEventListener('input', function () {
     updateScoreDisplay(parseInt(scoreSlider.value));

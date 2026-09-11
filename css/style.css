@@ -421,44 +421,36 @@ svg { display: inline-block; vertical-align: middle; }
 /* ── REVIEW PANEL ── */
 .review-panel {
   width: var(--panel-width);
-  min-width: var(--panel-width);
+  min-width: 240px;
+  max-width: 560px;
   background: var(--bg-panel);
   border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  transition: width var(--transition-slow), min-width var(--transition-slow);
   position: relative;
   overflow: hidden;
-}
-.review-panel.collapsed {
-  width: 48px;
-  min-width: 48px;
+  flex-shrink: 0;
 }
 
-.panel-toggle {
+/* Drag handle on left edge */
+.panel-drag-handle {
   position: absolute;
-  top: 16px;
-  left: -16px;
-  z-index: 10;
-  width: 32px;
-  height: 32px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all var(--transition);
-  color: var(--text-secondary);
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  cursor: col-resize;
+  z-index: 20;
+  background: transparent;
+  transition: background 0.15s;
 }
-.panel-toggle:hover {
-  background: var(--bg-hover);
-  border-color: var(--purple);
-  color: var(--purple);
+.panel-drag-handle:hover,
+.panel-drag-handle.dragging {
+  background: var(--purple);
+  opacity: 0.5;
 }
-.panel-toggle svg { transition: transform var(--transition-slow); }
-.review-panel.collapsed .panel-toggle svg { transform: rotate(180deg); }
+
+
 
 .panel-inner {
   flex: 1;
@@ -470,7 +462,7 @@ svg { display: inline-block; vertical-align: middle; }
   transition: opacity var(--transition);
   padding: 24px 20px 20px;
 }
-.review-panel.collapsed .panel-inner { opacity: 0; pointer-events: none; }
+
 
 .panel-title {
   font-size: 15px;
@@ -1228,8 +1220,7 @@ svg { display: inline-block; vertical-align: middle; }
     border-left: none;
     border-top: 1px solid var(--border);
   }
-  .review-panel.collapsed { width: 100% !important; }
-  .panel-toggle { display: none; }
+  .panel-drag-handle { display: none; }
   .history-toolbar { flex-direction: column; align-items: stretch; }
 }
 
@@ -1248,25 +1239,7 @@ svg { display: inline-block; vertical-align: middle; }
   border-radius: var(--radius-sm);
 }
 
-/* ── COLLAPSED PANEL LABEL ── */
-.panel-collapsed-label {
-  display: none;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--purple);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  white-space: nowrap;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 20px 0;
-  gap: 8px;
-}
-.review-panel.collapsed .panel-collapsed-label { display: flex; }
+
 
 /* ── HIGHLIGHT MATCH ── */
 .highlight {
